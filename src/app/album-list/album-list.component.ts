@@ -3,7 +3,7 @@ import { NgForOf, NgIf } from "@angular/common";
 import { Router, RouterOutlet } from "@angular/router";
 import { CdkDrag, CdkDragDrop, CdkDropList, moveItemInArray } from "@angular/cdk/drag-drop";
 
-import {InfiniteScrollModule} from 'ngx-infinite-scroll';
+import {InfiniteScrollModule} from "ngx-infinite-scroll";
 
 import { AlbumService } from "../services/album.service";
 import { SortingService } from "../services/sorting.service";
