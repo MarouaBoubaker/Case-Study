@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { NgForOf, NgIf } from "@angular/common";
+import { Component, OnInit} from '@angular/core';
+import { NgForOf, NgIf, SlicePipe } from "@angular/common";
 import { Router, RouterOutlet } from "@angular/router";
 import { CdkDrag, CdkDragDrop, CdkDropList, moveItemInArray } from "@angular/cdk/drag-drop";
 
@@ -9,7 +9,6 @@ import { AlbumService } from "../services/album.service";
 import { SortingService } from "../services/sorting.service";
 
 import { AlbumDetailComponent } from "../album-detail/album-detail.component";
-import {finalize, tap} from "rxjs";
 
 @Component({
   selector: 'app-album-list',
@@ -22,7 +21,8 @@ import {finalize, tap} from "rxjs";
     AlbumDetailComponent,
     CdkDropList,
     CdkDrag,
-    InfiniteScrollModule
+    InfiniteScrollModule,
+    SlicePipe
   ],
   styleUrl: './album-list.component.scss'
 })
@@ -30,33 +30,35 @@ export class AlbumListComponent implements OnInit {
   albums: any[] = [];
   sortedAlbums: any[] = [];
 
-  pageNumber = 1;
-  loading = false;
+  itemsToShow = 6;
+  totalItems: number = 0;
+
   scrollDistance = 2;
   scrollUpDistance = 1.5;
 
-  constructor(private albumService: AlbumService, private sortingService: SortingService, private router: Router) {}
+  constructor(private albumService: AlbumService,
+              private sortingService: SortingService,
+              private router: Router) {}
 
   ngOnInit(): void {
    this.fetchAlbums();
   }
 
   fetchAlbums(): void {
-    this.loading = true;
-    this.albumService.searchAlbums('Beatles').pipe(
-      tap(results => {
-        this.albums = this.albums.concat(results);
-        this.sortListByReleaseDate(); // Sort after loading
-      }),
-      finalize(() => {
-        this.loading = false;
-      })
-    ).subscribe();
+    this.albumService.searchAlbums('Beatles').subscribe((results) => {
+      this.albums = results;
+      this.totalItems = this.albums.length;
+    });
   }
 
   loadMore(): void {
-    this.pageNumber++;
-    this.fetchAlbums();
+
+    const remainingItems = this.totalItems - this.itemsToShow;
+    const itemsToLoad = Math.min(5, remainingItems); // Load up to 5 items or the remaining ones
+
+    if (itemsToLoad > 0) {
+      this.itemsToShow += itemsToLoad;
+    }
   }
 
   goToDetails(collectionId: string): void {

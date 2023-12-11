@@ -9,13 +9,13 @@ import { AlbumModel } from "../models/album.model.model";
   providedIn: 'root'
 })
 export class AlbumService {
-  private apiUrl = 'api/search';
 
   constructor(private http: HttpClient) {}
 
   //retrieve all albums from API
   searchAlbums(term: string): Observable<AlbumModel[]> {
-    const searchUrl = `${this.apiUrl}?term=${term}&entity=album`;
+    const searchUrl = `/api/search?term=${term}&entity=album`;
+    console.log('Search URL:', searchUrl);
     return this.http.get<any>(searchUrl).pipe(
       map((response: any) => {
         if (!response || !response.results || !Array.isArray(response.results)) {

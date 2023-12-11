@@ -1,7 +1,7 @@
 <button (click)="sortListByReleaseDate()">Sort List By Date</button>
 <div cdkDropList (cdkDropListDropped)="onDrop($event)">
-<div *ngIf="albums && albums.length > 0" class="grid-container">
-    <div class="album-card" *ngFor="let album of albums" (click)="goToDetails(album.collectionId)" cdkDrag>
+<div *ngIf="albums && albums.length > 0 " class="grid-container">
+    <div class="album-card" *ngFor="let album of albums | slice: 0:itemsToShow" (click)="goToDetails(album.collectionId)" cdkDrag>
       <img class="album-cover" [src]="album.artworkUrl100" alt="Album Cover">
       <div class="album-details">
         <p>Album: {{ album.collectionName }}</p>
@@ -11,5 +11,5 @@
 </div>
 </div>
 <div infiniteScroll [infiniteScrollDistance]="scrollDistance" [infiniteScrollUpDistance]="scrollUpDistance" (scrolled)="loadMore()">
-  <div *ngIf="loading" class="loading-indicator">Loading...</div>
+  <div *ngIf="itemsToShow < totalItems" class="loading-indicator">Loading...</div>
 </div>
