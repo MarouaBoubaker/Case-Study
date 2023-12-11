@@ -9,6 +9,7 @@ import { AlbumService } from "../services/album.service";
 import { SortingService } from "../services/sorting.service";
 
 import { AlbumDetailComponent } from "../album-detail/album-detail.component";
+import {finalize, tap} from "rxjs";
 
 @Component({
   selector: 'app-album-list',
@@ -42,16 +43,15 @@ export class AlbumListComponent implements OnInit {
 
   fetchAlbums(): void {
     this.loading = true;
-    this.albumService.searchAlbums('Beatles').subscribe(
-      (results) => {
+    this.albumService.searchAlbums('Beatles').pipe(
+      tap(results => {
         this.albums = this.albums.concat(results);
         this.sortListByReleaseDate(); // Sort after loading
-      },
-      () => {},
-      () => {
+      }),
+      finalize(() => {
         this.loading = false;
-      }
-    );
+      })
+    ).subscribe();
   }
 
   loadMore(): void {
