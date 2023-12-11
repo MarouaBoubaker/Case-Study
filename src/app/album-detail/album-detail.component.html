@@ -1,0 +1,10 @@
+<router-outlet></router-outlet>
+<div *ngIf="albumData">
+  <img [src]="albumData.artworkUrl100" alt="Album Cover">
+  <p>{{ albumData.collectionName }}</p>
+  <ul> Track List:
+    <li *ngFor="let track of albumData.trackList">{{ track.trackName }}</li>
+  </ul>
+  <p>Release Date : {{ albumData.releaseDate | date: 'dd.MM.YYYY' }} </p>
+  <p>Genre: {{ albumData.primaryGenreName }}</p>
+</div>

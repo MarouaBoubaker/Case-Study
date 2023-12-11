@@ -1,0 +1,12 @@
+<button (click)="sortListByReleaseDate()">Sort List By Date</button>
+<div cdkDropList (cdkDropListDropped)="onDrop($event)">
+<div *ngIf="albums && albums.length > 0" class="grid-container">
+    <div class="album-card" *ngFor="let album of albums" (click)="goToDetails(album.collectionId)" cdkDrag>
+      <img class="album-cover" [src]="album.artworkUrl100" alt="Album Cover">
+      <div class="album-details">
+        <p>Album: {{ album.collectionName }}</p>
+        <p>Artist: {{ album.artistName }}</p>
+      </div>
+    </div>
+</div>
+</div>
