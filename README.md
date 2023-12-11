@@ -23,5 +23,12 @@ Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.
 Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
 
 ## Further help
+For the sorting task I implemented two versions:
+1. Drag and drop the cards, and you will see the transitions.
+2. Hit The button and make a sorting according to the release date.
+
+To show Details view: Please click on the Card to navigate to details view.
+
+For unit Test I added some basics test for The Api for example.
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.

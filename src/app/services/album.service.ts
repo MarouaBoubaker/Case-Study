@@ -13,6 +13,7 @@ export class AlbumService {
 
   constructor(private http: HttpClient) {}
 
+  //retrieve all albums from API
   searchAlbums(term: string): Observable<AlbumModel[]> {
     const searchUrl = `${this.apiUrl}?term=${term}&entity=album`;
     return this.http.get<any>(searchUrl).pipe(
@@ -36,8 +37,8 @@ export class AlbumService {
       primaryGenreName: result.primaryGenreName
     };
   }
+
   private generateTrackList(trackCount: number): { trackName: string }[] {
-    // You can generate a default list of tracks based on trackCount
     return Array.from({length: trackCount}, (_, index) => ({
       trackName: `Track ${index + 1}`,
     }));

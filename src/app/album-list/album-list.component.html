@@ -10,3 +10,6 @@
     </div>
 </div>
 </div>
+<div  infinite-scroll [infiniteScrollDistance]="scrollDistance" [infiniteScrollUpDistance]="scrollUpDistance" [infiniteScrollContainer]="loadMore">
+  <div *ngIf="loading" class="loading-indicator">Loading...</div>
+</div>

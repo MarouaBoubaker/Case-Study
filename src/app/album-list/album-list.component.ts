@@ -3,6 +3,8 @@ import { NgForOf, NgIf } from "@angular/common";
 import { Router, RouterOutlet } from "@angular/router";
 import { CdkDrag, CdkDragDrop, CdkDropList, moveItemInArray } from "@angular/cdk/drag-drop";
 
+import {InfiniteScrollModule} from 'ngx-infinite-scroll';
+
 import { AlbumService } from "../services/album.service";
 import { SortingService } from "../services/sorting.service";
 
@@ -18,7 +20,8 @@ import { AlbumDetailComponent } from "../album-detail/album-detail.component";
     RouterOutlet,
     AlbumDetailComponent,
     CdkDropList,
-    CdkDrag
+    CdkDrag,
+    InfiniteScrollModule
   ],
   styleUrl: './album-list.component.scss'
 })
@@ -26,13 +29,34 @@ export class AlbumListComponent implements OnInit {
   albums: any[] = [];
   sortedAlbums: any[] = [];
 
+  pageNumber = 1;
+  loading = false;
+  scrollDistance = 2;
+  scrollUpDistance = 1.5;
+
   constructor(private albumService: AlbumService, private sortingService: SortingService, private router: Router) {}
 
   ngOnInit(): void {
-   this.albumService.searchAlbums('Beatles').subscribe(results => {
-     this.albums = results;
-     this.sortListByReleaseDate(); //initial sorting
-   });
+   this.fetchAlbums();
+  }
+
+  fetchAlbums(): void {
+    this.loading = true;
+    this.albumService.searchAlbums('Beatles').subscribe(
+      (results) => {
+        this.albums = this.albums.concat(results);
+        this.sortListByReleaseDate(); // Sort after loading
+      },
+      () => {},
+      () => {
+        this.loading = false;
+      }
+    );
+  }
+
+  loadMore(): void {
+    this.pageNumber++;
+    this.fetchAlbums();
   }
 
   goToDetails(collectionId: string): void {

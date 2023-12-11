@@ -15,7 +15,6 @@ export class AlbumModel {
   releaseDate: string;
   primaryGenreName: string;
 
-
   constructor(data: any) {
     this.collectionId = data.collectionId || '';
     this.collectionName = data.collectionName || '';
